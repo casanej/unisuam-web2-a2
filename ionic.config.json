@@ -1,0 +1,7 @@
+{
+  "name": "unisuam-web2-prova2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
