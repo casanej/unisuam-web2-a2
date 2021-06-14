@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonItem, IonLabel } from '@ionic/react';
+import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import { timeSinceAgo } from '../utils/date';
 
 const Tab3: React.FC = () => {
   const { username } = useParams<{ username?:string; }>();
-  const [repOwnerName, setRepOwnerName] = useState<string>('');
+  const [repOwnerName, setRepOwnerName] = useState<string | null | undefined>('');
   const [userRepos, setUserRepos] = useState<any[]>([]);
 
   const getUserRepos = async () => {
@@ -18,15 +18,12 @@ const Tab3: React.FC = () => {
         if(response.status === 200) {
           setUserRepos(response.data)
         }
-        console.log('[RESPONSE]', response);
     }
   }
 
   useEffect(() => {
     if(username) setRepOwnerName(username);
   }, [username])
-
-  useEffect(() => { getUserRepos(); }, [repOwnerName])
 
   return (
     <IonPage>
@@ -36,6 +33,13 @@ const Tab3: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <IonItem>
+          <IonLabel>Usuário</IonLabel>
+          <IonInput type = "text" onIonChange={(e) => setRepOwnerName(e.detail.value)}></IonInput>
+        </IonItem>
+        <IonItem>
+          <IonButton onClick={getUserRepos}>LISTAR</IonButton>
+        </IonItem>
         <IonList>
           {
             userRepos.map(repo => <IonItem key={repo.id} href={repo.html_url} target='_blank'>
